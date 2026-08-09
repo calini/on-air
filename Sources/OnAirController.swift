@@ -25,6 +25,13 @@ final class OnAirController: ObservableObject {
         didSet { reconcile() }
     }
 
+    /// Direct manual flip of the actuator (left-click on the menu bar icon),
+    /// independent of the automation policy. The next mic transition still
+    /// reconciles as usual, so this only holds until then.
+    func manualToggle() {
+        apply(!signOn)
+    }
+
     private let monitor = MicMonitor()
     private var cancellables = Set<AnyCancellable>()
     private var pendingOff: DispatchWorkItem?
