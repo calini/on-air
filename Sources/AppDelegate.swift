@@ -81,9 +81,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var statusLine: String {
         if !controller.automationEnabled { return "Automation paused" }
-        if controller.signOn { return "On air" }
+        if controller.signOn { return "On Air" }
         if controller.micActive { return "Mic live, sign held off" }
-        return "Off air"
+        return "Off Air"
     }
 
     @objc private func toggleAutomatic() {
