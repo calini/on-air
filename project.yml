@@ -20,11 +20,14 @@ targets:
     platform: macOS
     sources:
       - path: Sources
+      - path: Resources/AppIcon.icns
+        buildPhase: resources
     info:
       path: Config/Info.plist
       properties:
         CFBundleDisplayName: On Air
         CFBundleName: OnAir
+        CFBundleIconFile: AppIcon.icns
         # Menu-bar-only: no Dock icon, no main window.
         LSUIElement: true
         LSMinimumSystemVersion: "14.0"
