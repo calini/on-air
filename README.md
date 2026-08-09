@@ -85,18 +85,6 @@ Menu items:
 - **Local HTTP is allowed** via `NSAllowsLocalNetworking` in `project.yml`. If you
   front Home Assistant with HTTPS you can drop that key.
 
-## Publish to GitHub
-
-```sh
-git init
-git add .
-git commit -m "On Air: initial commit"
-gh repo create on-air --private --source=. --push
-```
-
-(Or create an empty repo in the GitHub UI and `git remote add origin ...` then
-`git push -u origin main`.)
-
 ## Project layout
 
 ```
