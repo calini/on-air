@@ -8,6 +8,7 @@ DerivedData/
 *.xcuserstate
 xcuserdata/
 .DS_Store
+OnAir.zip
 
 # Swift Package Manager (if added later)
 .build/
