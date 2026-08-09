@@ -1,0 +1,42 @@
+name: OnAir
+options:
+  bundleIdPrefix: io.ilie
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    # Set this to your Apple Developer Team ID for automatic signing,
+    # or leave it blank and pick your team in Xcode (Signing & Capabilities).
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  OnAir:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+    info:
+      path: Config/Info.plist
+      properties:
+        CFBundleDisplayName: On Air
+        CFBundleName: OnAir
+        # Menu-bar-only: no Dock icon, no main window.
+        LSUIElement: true
+        LSMinimumSystemVersion: "14.0"
+        # Allow plain-http calls to Home Assistant on your local network.
+        # Without this, ATS silently blocks http:// URLs.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+        # macOS 15 (Sequoia) requires this string to grant local network access,
+        # otherwise URLSession fails with -1009 "Local network prohibited".
+        NSLocalNetworkUsageDescription: "On Air needs to reach your Home Assistant server on the local network to toggle the on-air light."
+    settings:
+      base:
+        PRODUCT_NAME: OnAir
+        PRODUCT_BUNDLE_IDENTIFIER: io.ilie.onair
+        CODE_SIGN_STYLE: Automatic
