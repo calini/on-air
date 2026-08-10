@@ -96,11 +96,21 @@ Menu items:
 ## Releases
 
 Pushing a tag like `v0.2.0` triggers [`.github/workflows/release.yml`](.github/workflows/release.yml),
-which builds an **ad-hoc signed** `OnAir.zip` and attaches it to a GitHub
-Release. Ad-hoc signing needs no Apple Developer account, but it also isn't
-notarized, so Gatekeeper will flag it on first launch:
+which builds an **ad-hoc signed** `OnAir.zip`, attaches it to a GitHub
+Release, and updates the `on-air` Cask in
+[calini/homebrew-tap](https://github.com/calini/homebrew-tap).
 
-1. Unzip and drag `OnAir.app` to `/Applications`.
+Install via Homebrew:
+
+```sh
+brew install calini/tap/on-air
+```
+
+Or download `OnAir.zip` from the [releases page](https://github.com/calini/on-air/releases)
+directly. Either way, ad-hoc signing needs no Apple Developer account, but it
+also isn't notarized, so Gatekeeper will flag it on first launch:
+
+1. Unzip (or let `brew install` do it) and drag `OnAir.app` to `/Applications`.
 2. Right-click (or Control-click) it and choose **Open**, then confirm in the
    dialog. This is only needed once — after that it launches normally. (Plain
    double-click will just say the developer cannot be verified, with no

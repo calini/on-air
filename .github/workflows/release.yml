@@ -49,3 +49,55 @@ jobs:
           gh release create "${{ github.ref_name }}" OnAir.zip \
             --title "${{ github.ref_name }}" \
             --generate-notes
+
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v4
+        with:
+          repository: calini/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+          path: homebrew-tap
+
+      - name: Update Homebrew Cask
+        run: |
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          SHA256="$(shasum -a 256 OnAir.zip | cut -d' ' -f1)"
+
+          cat > homebrew-tap/Casks/on-air.rb <<EOF
+          cask "on-air" do
+            version "${VERSION}"
+            sha256 "${SHA256}"
+
+            url "https://github.com/calini/on-air/releases/download/v#{version}/OnAir.zip"
+            name "On Air"
+            desc "Menu bar app that toggles a Home Assistant switch while your mic is live"
+            homepage "https://github.com/calini/on-air"
+
+            depends_on macos: ">= :sonoma"
+
+            app "OnAir.app"
+
+            zap trash: [
+              "~/Library/Preferences/io.ilie.onair.plist",
+            ]
+
+            caveats <<~CAVEATS
+              On Air is ad-hoc signed, not notarized. On first launch, right-click
+              (Control-click) OnAir.app in Applications and choose Open, then confirm
+              in the dialog -- otherwise Gatekeeper will refuse to launch it.
+            CAVEATS
+          end
+          EOF
+
+      - name: Push Homebrew Cask
+        working-directory: homebrew-tap
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/on-air.rb
+          if git diff --cached --quiet; then
+            echo "Cask already up to date, nothing to push"
+          else
+            git commit -m "on-air ${{ github.ref_name }}"
+            git push
+          fi
