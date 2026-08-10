@@ -1,8 +1,6 @@
 # On Air
 
-<p align="center">
-  <img src="icon.png" width="180" alt="On Air app icon">
-</p>
+<p align="center"><img src="icon.png" alt="On Air app icon" width="300"></p>
 
 <p align="center">
   <a href="https://github.com/calini/on-air/actions/workflows/release.yml"><img src="https://github.com/calini/on-air/actions/workflows/release.yml/badge.svg" alt="Build & Release"></a>
