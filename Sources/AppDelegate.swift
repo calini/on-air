@@ -1,6 +1,7 @@
 import AppKit
 import Combine
 import ServiceManagement
+import SwiftUI
 
 /// Owns the menu bar item. SwiftUI's `MenuBarExtra` cannot distinguish left
 /// from right click, so the status item is driven directly via AppKit:
@@ -10,6 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let controller = OnAirController()
 
     private var statusItem: NSStatusItem!
+    private var settingsWindow: NSWindow?
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -108,8 +110,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @objc private func openSettings() {
         NSApp.activate(ignoringOtherApps: true)
-        // SwiftUI's Settings scene registers this responder action; there is
-        // no public API to trigger it from outside a SwiftUI view.
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+
+        if settingsWindow == nil {
+            let hosting = NSHostingController(rootView: SettingsView())
+            // Let the SwiftUI view's intrinsic size drive the window frame;
+            // without this the hosting controller starts collapsed and the
+            // Form renders empty until the window is resized.
+            hosting.sizingOptions = [.preferredContentSize]
+
+            let window = NSWindow(contentViewController: hosting)
+            window.title = "On Air Settings"
+            window.styleMask = [.titled, .closable]
+            window.isReleasedWhenClosed = false
+            // Fallback size in case preferredContentSize hasn't resolved yet
+            // on the first show.
+            window.setContentSize(NSSize(width: 480, height: 260))
+            window.center()
+            settingsWindow = window
+        }
+        settingsWindow?.makeKeyAndOrderFront(nil)
+        settingsWindow?.orderFrontRegardless()
     }
 }

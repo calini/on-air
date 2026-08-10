@@ -35,7 +35,7 @@ final class OnAirController: ObservableObject {
     private let monitor = MicMonitor()
     private var cancellables = Set<AnyCancellable>()
     private var pendingOff: DispatchWorkItem?
-    private let offDelay: TimeInterval = 8
+    private let offDelay: TimeInterval = 3
 
     init() {
         automationEnabled = UserDefaults.standard.object(forKey: "automationEnabled") as? Bool ?? true
